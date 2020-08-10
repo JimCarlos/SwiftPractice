@@ -1,7 +1,8 @@
 #include<vector>
+#include<queue>
 
 
-int solution(std::vector<int> priorities, int location) {
+int solution_vector(std::vector<int> priorities, int location) {
     int answer = 0;
     std::vector<int> idx;
     bool flag = true;
@@ -42,3 +43,31 @@ int solution(std::vector<int> priorities, int location) {
     return answer;
 }
 
+int solution_best(std::vector<int> priorities, int location) {
+    int answer = 0;
+    std::queue<std::pair<int, int>> q;
+
+    for(int i=0; i<priorities.size(); i++){
+        q.push({priorities[i], i});
+    }
+
+    while (1)
+    {
+        auto max = std::max_element(priorities.begin(), priorities.end());
+        if (q.front().first == *max)
+        {
+            answer++;
+            if (q.front().second == location)
+            {
+                return answer;
+            }
+            q.pop();
+            priorities.erase(max);
+        }
+        else{
+            q.push(q.front());
+            q.pop();
+        }
+
+    }
+}
